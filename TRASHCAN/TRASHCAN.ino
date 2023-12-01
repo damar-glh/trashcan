@@ -41,23 +41,24 @@ void setup() {
 void loop() {
   wifi.loop();
   lcd.setCursor(4, 0);
-  lcd.print("SILAHKAN");
+  lcd.print("PLEASE");
   lcd.setCursor(1, 1);
-  lcd.print("MASUKAN SAMPAH");
+  lcd.print("PUT IN TRASH");
   delay(1000);
   lcd.clear();
-  // if (digitalRead(PROXIMITY_PIN) == HIGH) {
-  //   lcd.clear();
-  //   lcd.print("Deteksi logam");
-  //   delay(1000);
+  if (digitalRead(PROXIMITY_PIN) == HIGH) {
+    lcd.clear();
+    lcd.print("METAL TRASH");
+    delay(1000);
     
-  //   // Kendalikan motor stopper, buka servo, dan masukkan ke tong sampah logam
-  //   controlMetalWaste();
+    // Control the stopper motor, open the servo, and insert it into the metal trash can
+    controlMetalWaste();
     
-  //   lcd.clear();
-  //   lcd.print("Sampah logam masuk");
-  //   delay(2000);
-  // } else if (analogRead(MQ4_PIN) > 500) {
+    lcd.clear();
+    lcd.print("METAL TRASH");
+    delay(2000);
+  } 
+  // else if (analogRead(MQ4_PIN) > 500) {
     
   //   lcd.clear();
   //   lcd.print("Deteksi methane");
