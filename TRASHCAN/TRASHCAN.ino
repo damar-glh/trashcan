@@ -44,7 +44,7 @@ void loop() {
   lcd.print("PLEASE");
   lcd.setCursor(1, 1);
   lcd.print("PUT IN TRASH");
-  delay(1000);
+  delay(5000);
   lcd.clear();
   if (digitalRead(PROXIMITY_PIN) == HIGH) {
     lcd.clear();
@@ -57,75 +57,71 @@ void loop() {
     lcd.clear();
     lcd.print("METAL TRASH");
     delay(2000);
-  } 
-  // else if (analogRead(MQ4_PIN) > 500) {
+  } else if (analogRead(MQ4_PIN) > 500) {
+    lcd.clear();
+    lcd.print("METHANE DETECTED");
+    delay(1000);
     
-  //   lcd.clear();
-  //   lcd.print("Deteksi methane");
-  //   delay(1000);
+    // Control the stopper motor, open the servo, and put it in the organic waste bin
+    controlOrganicWaste();
     
-  //   // Kendalikan motor stopper, buka servo, dan masukkan ke tong sampah organik
-  //   controlOrganicWaste();
+    lcd.clear();
+    lcd.print("ORGANIC TRASH");
+    delay(2000);
+  } else {
+    lcd.clear();
+    lcd.print("INORGANIC TRASH");
+    delay(2000);
     
-  //   lcd.clear();
-  //   lcd.print("Sampah organik masuk");
-  //   delay(2000);
-  // } else {
-  //   lcd.clear();
-  //   lcd.print("Sampah anorganik masuk");
-  //   delay(2000);
+    // Control the stopper motor, open the servo, and put it into the inorganic trash can
+    controlInorganicWaste();
     
-  //   // Kendalikan motor stopper, buka servo, dan masukkan ke tong sampah anorganik
-  //   controlInorganicWaste();
-    
-  //   lcd.clear();
-  //   lcd.print("Sampah anorganik masuk");
-  //   delay(2000);
-  // }
+    lcd.clear();
+    lcd.print("INORGANIC TRASH");
+    delay(2000);
+  }
 
-  // // Kembalikan stepper ke posisi awal
-  // stepperMotor.step(-512);
-  // delay(1000);
+  // Return the stepper to the starting position
+  stepperMotor.step(-512);
+  delay(1000);
 }
 
-// void controlMetalWaste() {
-//   // Kendalikan motor stopper dan buka servo
-//   // Sesuaikan kode ini dengan kebutuhan perangkat keras Anda
-// }
+void controlMetalWaste() {
+  // Control the stopper motor and open the servo
+  // Adapt this code to your hardware requirements
+}
 
-// void controlOrganicWaste() {
-//   // Kendalikan motor stopper dan buka servo
-//   // Sesuaikan kode ini dengan kebutuhan perangkat keras Anda
-// }
+void controlOrganicWaste() {
+  
+}
 
-// void controlInorganicWaste() {
-//   // Kendalikan motor stopper dan buka servo
-//   // Sesuaikan kode ini dengan kebutuhan perangkat keras Anda
-// }
+void controlInorganicWaste() {
+  
+}
 
-// void init_hardware()
-// {
-//   Serial.begin(115200);
-//   WiFi.disconnect(true);
-//   delay(1000);
-//   Serial.flush();
-//   Serial.println();
-//   Serial.println();
-//   Serial.println("will be started in 500ms..");
-// }
+void init_hardware()
+{
+  Serial.begin(115200);
+  WiFi.disconnect(true);
+  delay(1000);
+  Serial.flush();
+  Serial.println();
+  Serial.println();
+  Serial.println("will be started in 500ms..");
+}
 
-// void init_wifi() {
-//   wifi.init();
-//   wifi.on_connected([&](const void* message)
-//   {
-//     Serial.print("WIFI CONNECTED WITH IP: ");
-//     Serial.println(WiFi.localIP());
-//   });
+void init_wifi() {
+  wifi.init();
+  wifi.on_connected([&](const void* message)
+  {
+    Serial.print("WIFI CONNECTED WITH IP: ");
+    Serial.println(WiFi.localIP());
+  });
 
-//   wifi.on_connecting([&](const void* message)
-//   {
-//     Serial.print("Connecting to ");
-//     Serial.println(wifi.get("ssid") + ", " + wifi.get("password"));
-//     delay(200);
-//   });
-// }
+  wifi.on_connecting([&](const void* message)
+  {
+    Serial.print("Connecting to ");
+    Serial.println(wifi.get("ssid") + ", " + wifi.get("password"));
+    delay(200);
+  });
+}
