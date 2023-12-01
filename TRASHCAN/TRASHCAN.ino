@@ -10,6 +10,10 @@
 #define WIFI_PASSPHRASE ""
 #endif
 
+// definition blink
+#define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
+#define BLYNK_TEMPLATE_NAME "TRASHCAN"
+
 // Definition pin
 #define PROXIMITY_PIN D1  // Pin for sensor proximity
 #define MQ4_PIN A0        // Pin for sensor MQ-4
