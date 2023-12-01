@@ -1,21 +1,29 @@
+#include <ESP8266WiFi.h>
+#include <WiFiConnector.h>
 #include <Wire.h>
 #include <LCD_I2C.h>
 #include <Servo.h>
 #include <Stepper.h>
 
-// Definisi pin
-#define PROXIMITY_PIN D1 // Pin untuk sensor proximity
-#define MQ4_PIN A0       // Pin untuk sensor MQ-4
-#define SERVO_PIN D2      // Pin untuk servo motor
-#define STEPPER_PIN1 D3   // Pin untuk stepper motor
+#ifndef WIFI_SSID
+#define WIFI_SSID       ""
+#define WIFI_PASSPHRASE ""
+#endif
+
+// Definition pin
+#define PROXIMITY_PIN D1 // Pin for sensor proximity
+#define MQ4_PIN A0       // Pin for sensor MQ-4
+#define SERVO_PIN D2      // Pin for servo motor
+#define STEPPER_PIN1 D3   // Pin for stepper motor
 #define STEPPER_PIN2 D4
 #define STEPPER_PIN3 D5
 #define STEPPER_PIN4 D6
 
-// Inisialisasi objek
+// Inisialisasi objet
 LCD_I2C lcd(0x27, 16, 2);
 Servo servoMotor;
 Stepper stepperMotor(512, STEPPER_PIN1, STEPPER_PIN3, STEPPER_PIN2, STEPPER_PIN4);
+WiFiConnector wifi(WIFI_SSID, WIFI_PASSPHRASE);
 
 void setup() {
   Serial.begin(115200);
@@ -25,9 +33,13 @@ void setup() {
   pinMode(MQ4_PIN, INPUT);
   servoMotor.attach(SERVO_PIN);
   stepperMotor.setSpeed(10);
+  init_hardware();
+  init_wifi();
+  wifi.connect();
 }
 
 void loop() {
+  wifi.loop();
   lcd.setCursor(4, 0);
   lcd.print("SILAHKAN");
   lcd.setCursor(1, 1);
@@ -88,4 +100,31 @@ void loop() {
 // void controlInorganicWaste() {
 //   // Kendalikan motor stopper dan buka servo
 //   // Sesuaikan kode ini dengan kebutuhan perangkat keras Anda
+// }
+
+// void init_hardware()
+// {
+//   Serial.begin(115200);
+//   WiFi.disconnect(true);
+//   delay(1000);
+//   Serial.flush();
+//   Serial.println();
+//   Serial.println();
+//   Serial.println("will be started in 500ms..");
+// }
+
+// void init_wifi() {
+//   wifi.init();
+//   wifi.on_connected([&](const void* message)
+//   {
+//     Serial.print("WIFI CONNECTED WITH IP: ");
+//     Serial.println(WiFi.localIP());
+//   });
+
+//   wifi.on_connecting([&](const void* message)
+//   {
+//     Serial.print("Connecting to ");
+//     Serial.println(wifi.get("ssid") + ", " + wifi.get("password"));
+//     delay(200);
+//   });
 // }
