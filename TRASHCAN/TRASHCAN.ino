@@ -11,8 +11,8 @@
 #endif
 
 // Definition pin
-#define PROXIMITY_PIN D1 // Pin for sensor proximity
-#define MQ4_PIN A0       // Pin for sensor MQ-4
+#define PROXIMITY_PIN D1  // Pin for sensor proximity
+#define MQ4_PIN A0        // Pin for sensor MQ-4
 #define SERVO_PIN D2      // Pin for servo motor
 #define STEPPER_PIN1 D3   // Pin for stepper motor
 #define STEPPER_PIN2 D4
@@ -44,7 +44,7 @@ void loop() {
   lcd.print("PLEASE");
   lcd.setCursor(1, 1);
   lcd.print("PUT IN TRASH");
-  delay(5000);
+  delay(000);
   lcd.clear();
   if (digitalRead(PROXIMITY_PIN) == HIGH) {
     lcd.clear();
