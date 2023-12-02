@@ -90,17 +90,23 @@ void loop() {
   delay(1000);
 }
 
+void openServo(){
+  // open servo motor
+  servoMotor.write(90);
+  delay(5000);
+}
+
 void controlMetalWaste() {
-  // Control the stopper motor and open the servo
-  // Adapt this code to your hardware requirements
+  // Control the stopper motor
+  openServo();
 }
 
 void controlOrganicWaste() {
-  
+  openServo();
 }
 
 void controlInorganicWaste() {
-  
+  openServo();
 }
 
 void init_hardware()
