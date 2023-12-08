@@ -1,5 +1,5 @@
 #include <ESP8266WiFi.h>
-#include <WiFiConnector.h>
+#include <BlynkSimpleEsp8266.h>
 #include <Wire.h>
 #include <LCD_I2C.h>
 #include <Servo.h>
@@ -11,8 +11,11 @@
 #endif
 
 // definition blink
-#define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
-#define BLYNK_TEMPLATE_NAME "TRASHCAN"
+#define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
+#define BLYNK_TEMPLATE_NAME         "Device"
+#define BLYNK_AUTH_TOKEN            "YourAuthToken"
+
+#define BLYNK_PRINT Serial
 
 // Definition pin
 #define PROXIMITY_PIN D1  // Pin for sensor proximity
@@ -40,9 +43,15 @@ void setup() {
   init_hardware();
   init_wifi();
   wifi.connect();
+
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  // You can also specify server:
+  //Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass, "blynk.cloud", 80);
+  //Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass, IPAddress(192,168,1,100), 8080);
 }
 
 void loop() {
+  Blynk.run();
   wifi.loop();
   lcd.setCursor(4, 0);
   lcd.print("PLEASE");
