@@ -19,9 +19,9 @@
 #define BLYNK_PRINT Serial
 
 // Definition pin
-#define PROXIMITY_PIN D1  // Pin for sensor proximity
+#define PROXIMITY_PIN D8  // Pin for sensor proximity
 #define MQ4_PIN A0        // Pin for sensor MQ-4
-#define SERVO_PIN D2      // Pin for servo motor
+#define SERVO_PIN D7      // Pin for servo motor
 #define STEPPER_PIN1 D3   // Pin for stepper motor
 #define STEPPER_PIN2 D4
 #define STEPPER_PIN3 D5
@@ -39,8 +39,8 @@ void setup() {
   lcd.backlight();
   pinMode(PROXIMITY_PIN, INPUT);
   pinMode(MQ4_PIN, INPUT);
-  servoMotor.attach(SERVO_PIN);
-  stepperMotor.setSpeed(10);
+  servoMotor.attach(SERVO_PIN, 500, 2400);
+  stepperMotor.setSpeed(100);
   init_hardware();
   init_wifi();
   wifi.connect();
@@ -102,17 +102,27 @@ void loop() {
 
 void openServo(){
   // open servo motor
+  servoMotor.write(0);
+  delay(2000);
   servoMotor.write(90);
-  delay(5000);
+  delay(2000);
 }
 
 void controlMetalWaste() {
   // Control the stopper motor
+  stepperMotor.step(500);
+  delay(1000);
   openServo();
+  stepperMotor.step(-500);
+  delay(1000);
 }
 
 void controlOrganicWaste() {
+  stepperMotor.step(-500);
+  delay(1000);
   openServo();
+  stepperMotor.step(500);
+  delay(1000);
 }
 
 void controlInorganicWaste() {
