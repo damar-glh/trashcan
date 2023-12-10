@@ -7,7 +7,8 @@
 // definition blink
 #define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
 #define BLYNK_TEMPLATE_NAME         "Device"
-#define BLYNK_AUTH_TOKEN            "YourAuthToken"
+#
+define BLYNK_AUTH_TOKEN            "YourAuthToken"
 
 #define BLYNK_PRINT Serial
 
