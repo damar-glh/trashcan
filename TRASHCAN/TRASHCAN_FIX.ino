@@ -153,4 +153,5 @@ void loop(){
 
   Serial.println(digitalRead(PROXIMITY_PIN));
   Serial.println(distance);
+  Serial.println(analogRead(MQ4_PIN));
 }
