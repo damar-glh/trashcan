@@ -1,6 +1,13 @@
 #include <LCD_I2C.h>
 #include <Servo.h>
-#include <Stepper.h>  
+#include <Stepper.h>
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>  
+
+// blynk connections
+char auth[] = "YOUR_AUTH_TOKEN";
+char ssid[] = "YOUR_WIFI_SSID";
+char pass[] = "YOUR_WIFI_PASSWORD";
 
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
@@ -34,6 +41,7 @@ void setup() {
   stepperMotor.setSpeed(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
+  Blynk.begin(auth, ssid, pass);
 }
 
 void openServo(){
@@ -66,6 +74,7 @@ void controlInorganicWaste() {
 }
 
 void loop(){
+  Blynk.run();
   // distance initialitation
   //Generate ultrasonic signal
   digitalWrite(TRIG_PIN, LOW);
