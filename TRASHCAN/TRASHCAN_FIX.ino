@@ -9,6 +9,10 @@ char auth[] = "YOUR_AUTH_TOKEN";
 char ssid[] = "YOUR_WIFI_SSID";
 char pass[] = "YOUR_WIFI_PASSWORD";
 
+// Define the Blynk template ID and name
+#define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
+#define BLYNK_TEMPLATE_NAME "TRASHCAN"
+
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
 #define MQ4_PIN A0        // Pin for sensor MQ-4
