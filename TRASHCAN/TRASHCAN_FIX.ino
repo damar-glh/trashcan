@@ -45,7 +45,7 @@ void setup() {
   stepperMotor.setSpeed(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
-  Blynk.begin(auth, ssid, pass);
+  Blynk.begin(auth, ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME);
 }
 
 void openServo(){
