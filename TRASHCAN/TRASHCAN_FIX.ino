@@ -12,6 +12,7 @@ char pass[] = "YOUR_WIFI_PASSWORD";
 // Define the Blynk template ID and name
 #define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
 #define BLYNK_TEMPLATE_NAME "TRASHCAN"
+#define BLYNK_AUTH_TOKEN "2nbYxdWBDUdEDMSNr3v7J5XjxRzd9fhN"
 
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
@@ -45,7 +46,7 @@ void setup() {
   stepperMotor.setSpeed(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
-  Blynk.begin(auth, ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME);
+  Blynk.begin(auth, ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME, BLYNK_AUTH_TOKEN);
 }
 
 void openServo(){
