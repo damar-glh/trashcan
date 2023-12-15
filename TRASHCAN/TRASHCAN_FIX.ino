@@ -2,12 +2,12 @@
 #include <Servo.h>
 #include <Stepper.h>
 #include <ESP8266WiFi.h>
-#include <BlynkSimpleEsp8266.h>  
+#include <BlynkSimpleEsp8266.h>
+#define BLYNK_PRINT Serial
 
 // blynk connections
-char auth[] = "YOUR_AUTH_TOKEN";
-char ssid[] = "YOUR_WIFI_SSID";
-char pass[] = "YOUR_WIFI_PASSWORD";
+char ssid[] = "ya";
+char pass[] = "";
 
 // Define the Blynk template ID and name
 #define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
@@ -64,6 +64,7 @@ void controlMetalWaste() {
   openServo();
   stepperMotor.step(-500);
   delay(1000);
+  Blynk.virtualWrite(V0, digitalRead(PROXIMITY_PIN));
 }
 
 void controlOrganicWaste() {
@@ -72,6 +73,7 @@ void controlOrganicWaste() {
   openServo();
   stepperMotor.step(500);
   delay(1000);
+  Blynk.virtualWrite(V1, analogRead(MQ4_PIN));
 }
 
 void controlInorganicWaste() {
