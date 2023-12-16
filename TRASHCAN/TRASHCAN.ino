@@ -1,5 +1,5 @@
 #include <ESP8266WiFi.h>
-#include <BlynkSimpleEsp8266.h>
+// #include <BlynkSimpleEsp8266.h>
 #include <WiFiConnector.h>
 #include <Wire.h>
 #include <LCD_I2C.h>

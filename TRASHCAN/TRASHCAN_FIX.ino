@@ -2,17 +2,17 @@
 #include <Servo.h>
 #include <Stepper.h>
 #include <ESP8266WiFi.h>
-#include <BlynkSimpleEsp8266.h>
-#define BLYNK_PRINT Serial
+// #include <BlynkSimpleEsp8266.h>w
+// #define BLYNK_PRINT Serial
 
 // blynk connections
 char ssid[] = "ya";
 char pass[] = "";
 
 // Define the Blynk template ID and name
-#define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
-#define BLYNK_TEMPLATE_NAME "TRASHCAN"
-#define BLYNK_AUTH_TOKEN "2nbYxdWBDUdEDMSNr3v7J5XjxRzd9fhN"
+// #define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
+// #define BLYNK_TEMPLATE_NAME "TRASHCAN"
+// #define BLYNK_AUTH_TOKEN "2nbYxdWBDUdEDMSNr3v7J5XjxRzd9fhN"
 
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
@@ -46,7 +46,7 @@ void setup() {
   stepperMotor.setSpeed(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
-  Blynk.begin(auth, ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME, BLYNK_AUTH_TOKEN);
+  // Blynk.begin(ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME, BLYNK_AUTH_TOKEN);
 }
 
 void openServo(){
@@ -60,11 +60,11 @@ void openServo(){
 void controlMetalWaste() {
   // Control the stopper motor
   stepperMotor.step(500);
-  delay(1000);
+  delay(5000);
   openServo();
   stepperMotor.step(-500);
-  delay(1000);
-  Blynk.virtualWrite(V0, digitalRead(PROXIMITY_PIN));
+  delay(5000);
+  // Blynk.virtualWrite(V0, digitalRead(PROXIMITY_PIN));
 }
 
 void controlOrganicWaste() {
@@ -73,7 +73,7 @@ void controlOrganicWaste() {
   openServo();
   stepperMotor.step(500);
   delay(1000);
-  Blynk.virtualWrite(V1, analogRead(MQ4_PIN));
+  // Blynk.virtualWrite(V1, analogRead(MQ4_PIN));
 }
 
 void controlInorganicWaste() {
@@ -81,7 +81,7 @@ void controlInorganicWaste() {
 }
 
 void loop(){
-  Blynk.run();
+  // Blynk.run();
   // distance initialitation
   //Generate ultrasonic signal
   digitalWrite(TRIG_PIN, LOW);
