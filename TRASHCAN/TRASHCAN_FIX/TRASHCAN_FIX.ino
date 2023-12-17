@@ -6,8 +6,8 @@
 // #define BLYNK_PRINT Serial
 
 // blynk connections
-char ssid[] = "ya";
-char pass[] = "";
+// char ssid[] = "ya";
+// char pass[] = "";
 
 // Define the Blynk template ID and name
 // #define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
@@ -51,29 +51,49 @@ void setup() {
 
 void openServo(){
   // open servo motor
-  servoMotor.write(0);
+  servoMotor.write(100);
   delay(2000);
-  servoMotor.write(90);
+  servoMotor.write(0);
   delay(2000);
 }
 
-void controlMetalWaste() {
+void controlMetalWasteOn() {
   // Control the stopper motor
   stepperMotor.step(500);
-  delay(5000);
-  openServo();
-  stepperMotor.step(-500);
-  delay(5000);
+  delay(100);
+  stepperMotor.step(500);
+  delay(100);
+  stepperMotor.step(500);
+  delay(100);
   // Blynk.virtualWrite(V0, digitalRead(PROXIMITY_PIN));
 }
 
-void controlOrganicWaste() {
+void controlMetalWasteCenter() {
   stepperMotor.step(-500);
-  delay(1000);
-  openServo();
-  stepperMotor.step(500);
-  delay(1000);
+  delay(100);
+  stepperMotor.step(-500);
+  delay(100);
+  stepperMotor.step(-500);
+  delay(100);
+}
+
+void controlOrganicWasteOn() {
+  stepperMotor.step(-500);
+  delay(100);
+  stepperMotor.step(-500);
+  delay(100);
+  stepperMotor.step(-500);
+  delay(100);
   // Blynk.virtualWrite(V1, analogRead(MQ4_PIN));
+}
+
+void controlOrganicWasteCenter() {
+  stepperMotor.step(500);
+  delay(100);
+  stepperMotor.step(500);
+  delay(100);
+  stepperMotor.step(500);
+  delay(100);
 }
 
 void controlInorganicWaste() {
@@ -101,29 +121,6 @@ void loop(){
   lcd.setCursor(1, 1);
   lcd.print("PUT IN TRASH");
   delay(1000);
-
-  // motor servo
-  // int pos;
-  // for (pos = 0; pos <= 180; pos += 1){
-  //   servoMotor.write(pos);
-  //   delay(15);
-  // }
-  // for (pos = 100; pos >= 0; pos -= 1){
-  //   servoMotor.write(pos);
-  //   delay(15);
-  // }
-
-  // servoMotor.write(0);
-  // delay(2000);
-  // servoMotor.write(90);
-  // delay(2000);
-
-  // stepperMotor.step(500);
-  // delay(1000);
-  // openServo();
-  // stepperMotor.step(-500);
-  // delay(1000);
-
   if (distance < 5.00){
     lcd.clear();
     lcd.setCursor(1,0);
@@ -137,7 +134,11 @@ void loop(){
     delay(4000);
       
     // Control the stopper motor, open the servo, and insert it into the metal trash can
-    controlMetalWaste();
+    controlMetalWasteOn();
+    openServo();
+    servoMotor.write(100);
+    delay(2000);
+    controlMetalWasteCenter();
 
     } else if (digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) > 500) {
       lcd.setCursor(2,1);
@@ -145,7 +146,12 @@ void loop(){
       delay(1000);
         
       // Control the stopper motor, open the servo, and put it in the organic waste bin
-      controlOrganicWaste();
+      controlInorganicWaste();
+      openServo();
+      servoMotor.write(100);
+      delay(2000);
+      controlOrganicWasteCenter();
+
 
     } else if (distance < 5.00 && digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) < 500) {
       lcd.setCursor(1,1);
@@ -153,9 +159,9 @@ void loop(){
       delay(2000);
       
       // Control the stopper motor, open the servo, and put it into the inorganic trash can
-      controlInorganicWaste();
-
-    
+      openServo();
+      servoMotor.write(100);
+      delay(2000);
     }
   }
    else {
