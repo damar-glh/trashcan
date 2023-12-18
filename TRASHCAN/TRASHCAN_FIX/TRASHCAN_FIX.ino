@@ -1,18 +1,20 @@
+// Define the Blynk template ID and name
+#define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
+#define BLYNK_TEMPLATE_NAME "TRASHCAN"
+#define BLYNK_AUTH_TOKEN "2nbYxdWBDUdEDMSNr3v7J5XjxRzd9fhN"
+
 #include <LCD_I2C.h>
 #include <Servo.h>
 #include <Stepper.h>
 #include <ESP8266WiFi.h>
-// #include <BlynkSimpleEsp8266.h>w
-// #define BLYNK_PRINT Serial
+#include <BlynkSimpleEsp8266.h>
+
+#define BLYNK_PRINT Serial
 
 // blynk connections
-// char ssid[] = "ya";
-// char pass[] = "";
-
-// Define the Blynk template ID and name
-// #define BLYNK_TEMPLATE_ID "TMPL66UOXJvmx"
-// #define BLYNK_TEMPLATE_NAME "TRASHCAN"
-// #define BLYNK_AUTH_TOKEN "2nbYxdWBDUdEDMSNr3v7J5XjxRzd9fhN"
+char auth[] = BLYNK_AUTH_TOKEN;
+char ssid[] = "Flamboyan";
+char pass[] = "Berastagi9090";
 
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
@@ -46,14 +48,26 @@ void setup() {
   stepperMotor.setSpeed(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
-  // Blynk.begin(ssid, pass, BLYNK_TEMPLATE_ID, BLYNK_TEMPLATE_NAME, BLYNK_AUTH_TOKEN);
+  Blynk.begin(auth, ssid, pass, "blynk.cloud", 80);
+}
+
+void connectWiFi(){
+  WiFi.begin(ssid, pass);
+  while (WiFi.status() != WL_CONNECTED) 
+  {
+     delay(500);
+     Serial.print("*");
+  }
+  
+  Serial.println("");
+  Serial.println("WiFi connection Successful");
+  Serial.print("The IP Address of ESP8266 Module is: ");
+  Serial.print(WiFi.localIP());// Print the IP address
 }
 
 void openServo(){
   // open servo motor
-  servoMotor.write(100);
-  delay(2000);
-  servoMotor.write(0);
+  servoMotor.write(20);
   delay(2000);
 }
 
@@ -65,10 +79,13 @@ void controlMetalWasteOn() {
   delay(100);
   stepperMotor.step(500);
   delay(100);
-  // Blynk.virtualWrite(V0, digitalRead(PROXIMITY_PIN));
+  stepperMotor.step(500);
+  delay(100);
 }
 
 void controlMetalWasteCenter() {
+  stepperMotor.step(-500);
+  delay(100);
   stepperMotor.step(-500);
   delay(100);
   stepperMotor.step(-500);
@@ -84,7 +101,6 @@ void controlOrganicWasteOn() {
   delay(100);
   stepperMotor.step(-500);
   delay(100);
-  // Blynk.virtualWrite(V1, analogRead(MQ4_PIN));
 }
 
 void controlOrganicWasteCenter() {
@@ -101,7 +117,8 @@ void controlInorganicWaste() {
 }
 
 void loop(){
-  // Blynk.run();
+  Blynk.run();
+  
   // distance initialitation
   //Generate ultrasonic signal
   digitalWrite(TRIG_PIN, LOW);
@@ -176,4 +193,20 @@ void loop(){
   Serial.println(digitalRead(PROXIMITY_PIN));
   Serial.println(distance);
   Serial.println(analogRead(MQ4_PIN));
+}
+
+BLYNK_WRITE(V0){
+  digitalRead(PROXIMITY_PIN);
+}
+
+BLYNK_WRITE(V1){
+  analogRead(MQ4_PIN);
+}
+
+BLYNK_WRITE(V2){
+  digitalRead(PROXIMITY_PIN);
+}
+
+BLYNK_WRITE(V3){
+  digitalRead(PROXIMITY_PIN);
 }
