@@ -31,6 +31,11 @@ char pass[] = "Berastagi9090";
 #define TRIG_PIN  D8
 #define ECHO_PIN  D0
 
+// varibel default blynk
+  int metalTrashCount;
+  int organicTrashCount;
+  int anorganicTrashCount;
+
 // Inisialisasi objek
 LCD_I2C lcd(0x27, 16, 2);
 Servo servoMotor;
@@ -126,18 +131,20 @@ void loop(){
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
-  
+
   //Read ultrasonic signal
   float duration = pulseIn(ECHO_PIN, HIGH);
   float distance = (duration * 0.034 * X) / 2;
 
-  // led
+  Blynk.virtualWrite(V5, distance);
   lcd.clear();
+  lcd.backlight();
   lcd.setCursor(4, 0);
   lcd.print("PLEASE");
   lcd.setCursor(1, 1);
   lcd.print("PUT IN TRASH");
   delay(1000);
+
   if (distance < 5.00){
     lcd.clear();
     lcd.setCursor(1,0);
@@ -145,18 +152,21 @@ void loop(){
     delay(1000);
 
     if (digitalRead(PROXIMITY_PIN) == LOW && analogRead(MQ4_PIN) < 500) {
-
-    lcd.setCursor(2,1);
-    lcd.print("METAL TRASH");
-    delay(4000);
-      
-    // Control the stopper motor, open the servo, and insert it into the metal trash can
-    controlMetalWasteOn();
-    openServo();
-    servoMotor.write(100);
-    delay(2000);
-    controlMetalWasteCenter();
-
+      lcd.setCursor(2,1);
+      lcd.print("METAL TRASH");
+      delay(4000);
+        
+      // Control the stopper motor, open the servo, and insert it into the metal trash can
+      controlMetalWasteOn();
+      openServo();
+      servoMotor.write(100);
+      delay(2000);
+      controlMetalWasteCenter();
+      for (int i = 0; i < 1; i++) {
+        metalTrashCount++;
+        delay(1000);
+      }
+      Blynk.virtualWrite(V0, metalTrashCount);
     } else if (digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) > 500) {
       lcd.setCursor(2,1);
       lcd.print("ORGANIC TRASH");
@@ -168,20 +178,28 @@ void loop(){
       servoMotor.write(100);
       delay(2000);
       controlOrganicWasteCenter();
-
-
+      for (int i = 0; i < 1; i++) {
+        organicTrashCount++;
+        delay(1000);
+      }
+      Blynk.virtualWrite(V1, organicTrashCount);
     } else if (distance < 5.00 && digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) < 500) {
       lcd.setCursor(1,1);
       lcd.print("ANORGANIC TRASH");
       delay(2000);
-      
+        
       // Control the stopper motor, open the servo, and put it into the inorganic trash can
       openServo();
       servoMotor.write(100);
       delay(2000);
+      
+      for (int i = 0; i < 1; i++) {
+        delay(1000);
+        anorganicTrashCount++;
+      }
+      Blynk.virtualWrite(V2, anorganicTrashCount);
     }
-  }
-   else {
+  } else {
     lcd.clear();
     lcd.setCursor(4, 0);
     lcd.print("NO TRASH");
@@ -189,24 +207,4 @@ void loop(){
     lcd.print("DETECTED");
     delay(1000);
   }
-
-  Serial.println(digitalRead(PROXIMITY_PIN));
-  Serial.println(distance);
-  Serial.println(analogRead(MQ4_PIN));
-}
-
-BLYNK_WRITE(V0){
-  digitalRead(PROXIMITY_PIN);
-}
-
-BLYNK_WRITE(V1){
-  analogRead(MQ4_PIN);
-}
-
-BLYNK_WRITE(V2){
-  digitalRead(PROXIMITY_PIN);
-}
-
-BLYNK_WRITE(V3){
-  digitalRead(PROXIMITY_PIN);
 }
