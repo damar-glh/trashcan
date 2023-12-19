@@ -106,9 +106,13 @@ void controlOrganicWasteOn() {
   delay(100);
   stepperMotor.step(-500);
   delay(100);
+  stepperMotor.step(-500);
+  delay(100);
 }
 
 void controlOrganicWasteCenter() {
+  stepperMotor.step(500);
+  delay(100);
   stepperMotor.step(500);
   delay(100);
   stepperMotor.step(500);
@@ -163,24 +167,28 @@ void loop(){
       delay(2000);
       controlMetalWasteCenter();
       for (int i = 0; i < 1; i++) {
-        metalTrashCount++;
         delay(1000);
+        metalTrashCount++;
       }
       Blynk.virtualWrite(V0, metalTrashCount);
+
+      int proximityValue = digitalRead(PROXIMITY_PIN);
+      int analogValue = map(proximityValue, 0, 1023, 0, 255);
+      Blynk.virtualWrite(V4, analogValue);
     } else if (digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) > 500) {
       lcd.setCursor(2,1);
       lcd.print("ORGANIC TRASH");
       delay(1000);
         
       // Control the stopper motor, open the servo, and put it in the organic waste bin
-      controlInorganicWaste();
+      controlOrganicWasteOn();
       openServo();
       servoMotor.write(100);
       delay(2000);
       controlOrganicWasteCenter();
       for (int i = 0; i < 1; i++) {
-        organicTrashCount++;
         delay(1000);
+        organicTrashCount++;
       }
       Blynk.virtualWrite(V1, organicTrashCount);
     } else if (distance < 5.00 && digitalRead(PROXIMITY_PIN) == HIGH && analogRead(MQ4_PIN) < 500) {
