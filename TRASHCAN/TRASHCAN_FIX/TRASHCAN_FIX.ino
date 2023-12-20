@@ -13,8 +13,8 @@
 
 // blynk connections
 char auth[] = BLYNK_AUTH_TOKEN;
-char ssid[] = "Flamboyan";
-char pass[] = "Berastagi9090";
+char ssid[] = "damaraaa.";
+char pass[] = "damaraaa.";
 
 // Definition pin
 #define PROXIMITY_PIN 3  // Pin for sensor proximity
